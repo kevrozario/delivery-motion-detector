@@ -1,6 +1,7 @@
 import cv2 as cv
 import os
 from dotenv import load_dotenv
+import time
 
 load_dotenv()
 rtsp = os.getenv("RTSP") #rtsp address is stored in .env
@@ -24,6 +25,12 @@ modified_frame1 = cv.cvtColor(frame1, cv.COLOR_BGR2GRAY)
 modified_frame1 = cv.GaussianBlur(modified_frame1, (21, 21), 0)
 roi_frame1 = modified_frame1[y:y+h, x:x+w]
 
+#cooldown between detections
+current_time = None
+prev_time = 0
+cooldown = 30
+
+
 #Open a window to view the live stream
 while cap.isOpened():
     
@@ -44,6 +51,14 @@ while cap.isOpened():
     #check differences in frames
     difference = cv.absdiff(roi_frame1, roi_frame2)
     thresh = cv.threshold(difference, 25, 255, cv.THRESH_BINARY)[1]
+    detect_pixels = cv.countNonZero(thresh)
+    
+    current_time = time.time()
+    
+    if detect_pixels > 2000 and current_time - prev_time > cooldown:
+        print("motion detected: ", detect_pixels)
+        cv.imwrite("motion.jpg", frame2)
+        prev_time = current_time
 
     
     #cv.imshow("motion detector", thresh)
