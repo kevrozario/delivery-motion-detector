@@ -4,3 +4,4 @@ from ultralytics import YOLO
 model = YOLO("models/best.pt")
 
 def classify(frame):
+    return frame
