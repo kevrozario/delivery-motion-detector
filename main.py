@@ -57,7 +57,6 @@ while cap.isOpened():
     
     if detect_pixels > 2000 and current_time - prev_time > cooldown:
         print("motion detected: ", detect_pixels)
-        cv.imwrite("motion.jpg", frame2)
         prev_time = current_time
 
     
