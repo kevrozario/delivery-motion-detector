@@ -20,20 +20,20 @@ def classify_package(frame):
                 x1, y1, x2, y2 = map(int, box.xyxy[0])
                 cv.rectangle(frame, (x1, y1), (x2, y2), (255, 0 , 0), 2)
                 
-                return frame, package_found
+                return package_found
             
-    return frame, package_found
+    return package_found
 
 #classify mail deliveries
 def classify_mail(frame):
     mail_found = False
     
     
-    return frame, mail_found
+    return mail_found
 
 #classify food deliveries
 def classify_food(frame):
     food_found = False
     
     
-    return frame, food_found
+    return food_found

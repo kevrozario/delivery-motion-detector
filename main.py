@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 import time
 from classify import classify_package, classify_food, classify_mail
+from notify import notify
+from save import save_delivery_image
 
 load_dotenv()
 rtsp = os.getenv("RTSP") #rtsp address is stored in .env
@@ -39,6 +41,9 @@ while cap.isOpened():
     if not ret:
         break
     
+    #frame for yolo detection
+    roi_yolo = frame2[y:y+h, x:x+w]
+
     #frame just for displaying to the user
     displayFrame=frame2.copy()
     cv.rectangle(displayFrame, (x,y), (x+w, y+h), (255, 0, 0), 2)
@@ -58,6 +63,16 @@ while cap.isOpened():
     
     if detect_pixels > 2000 and current_time - prev_time > cooldown:
         print("motion detected: ", detect_pixels)
+        package_found = classify_package(roi_yolo)
+        food_found = classify_food(roi_yolo)
+        mail_found = classify_mail(roi_yolo)
+        
+        if (package_found or food_found or mail_found):
+            print("Package found")
+            save_delivery_image(frame2)
+            notify()
+            break #end program when package is found
+        
         prev_time = current_time
 
     
