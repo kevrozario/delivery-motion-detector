@@ -5,7 +5,6 @@ model = YOLO("models/best.pt")
 
 #classify packages
 def classify_package(frame):
-
     package_found = False
     
     results = model(frame, verbose=False)
@@ -23,6 +22,18 @@ def classify_package(frame):
                 
                 return frame, package_found
             
-        
-        
     return frame, package_found
+
+#classify mail deliveries
+def classify_mail(frame):
+    mail_found = False
+    
+    
+    return frame, mail_found
+
+#classify food deliveries
+def classify_food(frame):
+    food_found = False
+    
+    
+    return frame, food_found

@@ -2,6 +2,7 @@ import cv2 as cv
 import os
 from dotenv import load_dotenv
 import time
+from classify import classify_package, classify_food, classify_mail
 
 load_dotenv()
 rtsp = os.getenv("RTSP") #rtsp address is stored in .env
